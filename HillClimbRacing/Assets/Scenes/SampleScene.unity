@@ -4482,7 +4482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
   _iterations_number: 10
-  _interactions_number_per_second: 1
+  _interactions_number_per_second: 0.1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
