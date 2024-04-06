@@ -13,10 +13,14 @@ public class AlgorithmShell : MonoBehaviour
     [field: SerializeField]
     public LevelController LevelController { get; private set; }
 
+    private void Awake()
+    {
+        ConnectingToNEAT.OnCreatingConnection.AddListener(IterationsController.InitializeAlgorithm);
+    }
+
     private void Start()
     {
         InitializeAlgorithmShell();
-        IterationsController.StartNextIteration();
     }
 
     public void InitializeAlgorithmShell()

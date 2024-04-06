@@ -4,9 +4,11 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ConnectingToNEAT : MonoBehaviour
 {
+    [NonSerialized] public UnityEvent OnCreatingConnection = new UnityEvent();
     [field: SerializeField]
     public AlgorithmShell AlgorithmShell { get; private set; }
     [SerializeField] private string _server_address = "127.0.0.1";
@@ -23,6 +25,8 @@ public class ConnectingToNEAT : MonoBehaviour
             client = new TcpClient(_server_address, _port);
             stream = client.GetStream();
             Debug.Log("Connected to server");
+
+            OnCreatingConnection.Invoke();
         }
         catch (Exception e)
         {
