@@ -4,29 +4,22 @@ using UnityEngine;
 
 public class Individual : MonoBehaviour
 {
-    [SerializeField] private DriveCar _drive_car;
+    [field: SerializeField]
+    public MovementController Movement { get; private set; }
+    [field: SerializeField]
+    public ScoreController Score { get; private set; }
+    [field: SerializeField]
+    public DamageTaker DamageTaker { get; private set; }
 
-    private float _start_point;
-    private float _max_distance;
-    private float _current_distance;
-    private bool _is_alive;
-
-    private void Awake()
-    {
-        _is_alive = true;
+    public void SetPreset(float start_point) 
+    { 
+        Score.SetStartPosition(start_point); 
     }
-
-    public void SetStartPoint(float start_point) { _start_point = start_point; }
-
-    public float CurrentScore { get { return _current_distance - _start_point; } }
-    public float MaxScore { get { return _max_distance - _start_point; } }
-    public bool IsAlive { get { return _is_alive; } }
-    public float DistanceToGround { get { return 0f; } }
 
     public void SetInput(float input)
     {
-        if (!_is_alive) return;
+        if (!DamageTaker.IsAlive) return;
 
-        _drive_car.SetInput(input);
+        Movement.SetInput(input);
     }
 }

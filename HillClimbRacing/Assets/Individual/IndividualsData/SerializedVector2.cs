@@ -11,6 +11,7 @@ public class SerializedVector2
         X = x;
         Y = y;
     }
+    public SerializedVector2() : this(0.0f, 0.0f) { }
     public SerializedVector2(Vector2 vector) : this(vector.x, vector.y) { }
     public SerializedVector2(Vector3 vector) : this(vector.x, vector.y) { }
     public static SerializedVector2[] Parse(Vector3[] points)

@@ -25,12 +25,19 @@ public class IndividualsController : MonoBehaviour
             Destroy(individual.gameObject);
     }
 
-    public IndividualData[] GetIndividualsData()
+    public IndividualData[] GetIndividualsAlgorithmData()
     {
         IndividualData[] individuals_data = new IndividualData[_individuals_number];
-
         for (int i = 0; i < _individuals_number; ++i)
-            individuals_data[i] = GetIndividualData(_individuals[i]);
+            individuals_data[i] = GetIndividualAlgorithmData(_individuals[i]);
+
+        return individuals_data;
+    }
+    public IndividualData[] GetIndividualsUIData()
+    {
+        IndividualData[] individuals_data = new IndividualData[_individuals_number];
+        for (int i = 0; i < _individuals_number; ++i)
+            individuals_data[i] = GetIndividualUIData(_individuals[i]);
 
         return individuals_data;
     }
@@ -50,13 +57,20 @@ public class IndividualsController : MonoBehaviour
         return individual;
     }
 
-    private IndividualData GetIndividualData(Individual individual)
+    private IndividualData GetIndividualAlgorithmData(Individual individual)
     {
         return IndividualData.GetBuilder().
             SetIndividual(individual).
             SetRoad(SerializedVector2.Parse(AlgorithmShell.LevelController.GetRoad(individual.transform.position, _road_points_number))).
             Build();
     }
+    private IndividualData GetIndividualUIData(Individual individual)
+    {
+        return IndividualData.GetBuilder().
+            SetIndividual(individual).
+            Build();
+    }
 
     public int IndividualsNumber { get { return _individuals_number; } }
+    public Individual[] Individuals { get { return _individuals; } }
 }

@@ -4482,7 +4482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
   _iterations_number: 10
-  _interactions_number_per_second: 0.1
+  _interactions_number_per_second: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4782,7 +4782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
-  _individuals_number: 10
+  _individuals_number: 1
   _individual_pref: {fileID: 6318913371201485549, guid: ef4c05f92a1ed1a44b9d808f75d9eb2f, type: 3}
   _road_points_number: 10
 --- !u!1 &1244853644

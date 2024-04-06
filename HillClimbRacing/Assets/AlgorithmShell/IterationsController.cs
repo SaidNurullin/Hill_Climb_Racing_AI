@@ -79,13 +79,14 @@ public class IterationsController : MonoBehaviour
     public void SendIndividualsData()
     {
 
-        List<string> jsonStrings = new List<string>();
+        /*List<string> jsonStrings = new List<string>();
         foreach (var individualData in AlgorithmShell.Individuals.GetIndividualsData())
         {
             string jsonString = JsonUtility.ToJson(individualData);
             jsonStrings.Add(jsonString);
         }
-        string data = "[" + string.Join(",", jsonStrings) + "]";
+        string data = "[" + string.Join(",", jsonStrings) + "]";*/
+        string data = JsonUtility.ToJson(AlgorithmShell.Individuals.GetIndividualsAlgorithmData()[0]);
         AlgorithmShell.ConnectingToNEAT.SendData(data, ProcessIndividualsCommand);
     }
     private void ProcessIndividualsCommand(string data)
