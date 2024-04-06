@@ -14,6 +14,7 @@ public class DamageTaker : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("CarTakeDamage");
         _is_alive = false;
         OnDieing.Invoke();
     }

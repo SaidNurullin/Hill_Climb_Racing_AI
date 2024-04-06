@@ -4782,7 +4782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
-  _individuals_number: 1
+  _individuals_number: 10
   _individual_pref: {fileID: 6318913371201485549, guid: ef4c05f92a1ed1a44b9d808f75d9eb2f, type: 3}
   _road_points_number: 10
 --- !u!1 &1244853644

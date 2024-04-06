@@ -789,7 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Movement>k__BackingField: {fileID: 8253244211491783497}
   <Score>k__BackingField: {fileID: 3099862156156923588}
-  <TakingDamage>k__BackingField: {fileID: 8353914024789570064}
+  <DamageTaker>k__BackingField: {fileID: 8353914024789570064}
 --- !u!114 &8253244211491783497
 MonoBehaviour:
   m_ObjectHideFlags: 0
