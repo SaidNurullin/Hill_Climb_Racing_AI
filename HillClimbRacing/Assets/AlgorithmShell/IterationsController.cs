@@ -24,6 +24,10 @@ public class IterationsController : MonoBehaviour
         _is_active_iteration = false;
     }
 
+    public void StartFirstIteration()
+    {
+        InitializeAlgorithm();
+    }
     public void StartNextIteration()
     {
         AlgorithmShell.LevelController.GenerateLevel();
@@ -59,6 +63,11 @@ public class IterationsController : MonoBehaviour
             SendIndividualsData();
         }
     }
+
+    public void InitializeAlgorithm()
+    {
+        AlgorithmShell.ConnectingToNEAT.SendData("Initialize algorithm", (string response) => StartNextIteration());
+    }
     public void CreatePopulation()
     {
         AlgorithmShell.ConnectingToNEAT.SendData("Create population");
@@ -75,5 +84,13 @@ public class IterationsController : MonoBehaviour
     private void ProcessIndividualsCommand(string data)
     {
         Debug.Log($"Processing individuals commands: {data}");
+        int n = 30;
+        float[] individuals_inputs = new float[n];
+        for (int i = 0; i < n; ++i)
+            individuals_inputs[i] = UnityEngine.Random.Range(-1, 2);
+
+        foreach (float input in individuals_inputs)
+            Debug.Log(input);
+        AlgorithmShell.Individuals.ProcessIndividualsInputs(individuals_inputs);
     }
 }

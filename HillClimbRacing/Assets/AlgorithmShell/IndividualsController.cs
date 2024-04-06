@@ -35,6 +35,12 @@ public class IndividualsController : MonoBehaviour
         return individuals_data;
     }
 
+    public void ProcessIndividualsInputs(float[] inputs)
+    {
+        for (int i = 0; i < _individuals_number; ++i)
+            _individuals[i].SetInput(inputs[i]);
+    }
+
     private Individual CreateIndividual(Vector3 start_point)
     {
         GameObject individual_obj = Instantiate(_individual_pref) as GameObject;

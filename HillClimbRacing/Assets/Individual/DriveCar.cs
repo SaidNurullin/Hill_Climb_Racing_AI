@@ -12,23 +12,30 @@ public class DriveCar : MonoBehaviour
     [SerializeField] private float rotationSpeed = 300f;
     [SerializeField] private float maxAngularVelocity = 100f;
 
+    private float _input = 0;
+
     public void FixedUpdate()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        Move(moveInput);
+        Move();
     }
 
-    public void Move(float moveInput)
+    public void Move()
     {
         if(Mathf.Abs(frontTyreRB.angularVelocity) < maxAngularVelocity)
         {
-            frontTyreRB.AddTorque(-moveInput * speed * Time.fixedDeltaTime);
+            frontTyreRB.AddTorque(-_input * speed * Time.fixedDeltaTime);
         }
         if (Mathf.Abs(backTyreRB.angularVelocity) < maxAngularVelocity)
         {
-            backTyreRB.AddTorque(-moveInput * speed * Time.fixedDeltaTime);
+            backTyreRB.AddTorque(-_input * speed * Time.fixedDeltaTime);
         }
 
-        carRB.AddTorque(moveInput * rotationSpeed * Time.fixedDeltaTime);
+        carRB.AddTorque(_input * rotationSpeed * Time.fixedDeltaTime);
+    }
+
+
+    public void SetInput(float input)
+    {
+        _input = input;
     }
 }
