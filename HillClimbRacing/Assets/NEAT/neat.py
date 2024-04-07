@@ -1,4 +1,5 @@
 import socket
+import json
 
 # Создаем сокет
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,12 +21,17 @@ print(f"Подключение установлено с {addr}")
 
 while True:
     # Принимаем данные от Unity
-    data = client_socket.recv(1024).decode()
+    data = client_socket.recv(4096).decode()
 
     if not data:
         break
 
-    print("Получены данные от Unity:", data)
+    if len(data) > 30:
+        # Load the JSON data
+        parsed_json = json.loads(data)
+
+        # Access and print the JSON data
+        print(parsed_json[0]['Position'])
 
     # Отправляем ответ обратно
     response = "Привет, Unity! Я Python-сервер."

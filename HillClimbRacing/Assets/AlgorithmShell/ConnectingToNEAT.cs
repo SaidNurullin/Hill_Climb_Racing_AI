@@ -44,7 +44,7 @@ public class ConnectingToNEAT : MonoBehaviour
             await stream.WriteAsync(bytesToSend, 0, bytesToSend.Length);
             //Debug.Log("Data sent to server: " + data);
 
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
             string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
             //Debug.Log("Response from server: " + response);
