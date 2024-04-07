@@ -67,15 +67,22 @@ public class IterationsController : MonoBehaviour
 
     public void InitializeAlgorithm()
     {
-        AlgorithmShell.ConnectingToNEAT.SendData("Initialize algorithm", (string response) => StartNextIteration());
+        RequestData request_data = RequestData.GetBuilder().
+            SetCommand("Initialize algorithm").
+            SetProcessFunction((string response) => StartNextIteration()).Build();
+        AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void CreatePopulation()
     {
-        AlgorithmShell.ConnectingToNEAT.SendData("Create population");
+        RequestData request_data = RequestData.GetBuilder().
+            SetCommand("Create population").Build();
+        AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void EvaluatePopulation()
     {
-        AlgorithmShell.ConnectingToNEAT.SendData("Evaluate population");
+        RequestData request_data = RequestData.GetBuilder().
+            SetCommand("Evaluate population").Build();
+        AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void SendIndividualsData()
     {
@@ -87,9 +94,11 @@ public class IterationsController : MonoBehaviour
             jsonStrings.Add(jsonString);
         }
         string data = "[" + string.Join(",", jsonStrings) + "]";
-        Debug.Log(data);
-        //string data = JsonUtility.ToJson(AlgorithmShell.Individuals.GetIndividualsAlgorithmData()[0]);
-        AlgorithmShell.ConnectingToNEAT.SendData(data, ProcessIndividualsCommand);
+        RequestData request_data = RequestData.GetBuilder().
+            SetCommand("Process individuals data").
+            SetData(data).
+            SetProcessFunction(ProcessIndividualsCommand).Build();
+        AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     private void ProcessIndividualsCommand(string data)
     {
