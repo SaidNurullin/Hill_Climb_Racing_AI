@@ -60,7 +60,7 @@ public class RequestData
 
     public string GetJson()
     {
-        return $"{{\"command\": \"{Command}\", \"data\": \"{Data}\"}}";
+        return $"{{\"command\": \"{Command}\", \"data\": {Data}}}";
     }
 
     public static Builder GetBuilder() { return new Builder(); }

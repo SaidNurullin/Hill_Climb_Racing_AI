@@ -806,7 +806,7 @@ MonoBehaviour:
   backTyreRB: {fileID: 2489812473818950125}
   carRB: {fileID: 8193066677015145266}
   speed: 100
-  rotationSpeed: 100
+  rotationSpeed: 300
   maxAngularVelocity: 2000
   _ground_layer_mask:
     serializedVersion: 2
