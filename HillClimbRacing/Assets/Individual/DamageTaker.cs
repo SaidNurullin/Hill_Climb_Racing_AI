@@ -11,6 +11,7 @@ public class DamageTaker : MonoBehaviour
     private void Awake()
     {
         _is_alive = true;
+        Invoke("Die", 50f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,4 +24,9 @@ public class DamageTaker : MonoBehaviour
     }
 
     public bool IsAlive { get { return _is_alive; } }
+
+    private void Die()
+    {
+        _is_alive = false;
+    }
 }

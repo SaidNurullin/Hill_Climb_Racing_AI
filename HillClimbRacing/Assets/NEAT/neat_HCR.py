@@ -6,6 +6,11 @@ import json
 
 ACTIVATION_THRESHOLD = 0.5
 
+gen = 0
+
+config = None
+population = None
+
 
 class Car:
     def __init__(self,
@@ -24,17 +29,34 @@ class Car:
 
 
 def get_unity_data():
+    while True:
+        data = client_socket.recv(4096).decode()
 
-    data = client_socket.recv(4096).decode()
+        parsed_json = json.loads(data)
+
+        if parsed_json["command"] == "Initialize algorithm":
+            print("Error: algorithm is initialized")
+            exit(1)
+        elif parsed_json["command"] == "Create population":
+            print("Error: population is created")
+            exit(1)
+        elif parsed_json["command"] == "Evaluate population":
+            return "new"
+        elif parsed_json["command"] == "Process individuals data":
+            return parsed_json["data"]
+        else:
+            print("Error: wrong command")
+            exit(1)
+
+
+def parse_unity_data(data):
 
     cars = []
 
     if not data:
         return cars
 
-    parsed_json = json.loads(data)
-
-    for item in parsed_json:
+    for item in data:
         car = Car(
             item['Position'],
             item['Rotation'],
@@ -51,7 +73,7 @@ def get_unity_data():
 
 
 def send_unity_outputs(outputs):
-    response = "Привет, Unity! Я Python-сервер."
+    response = outputs.lower()
     client_socket.send(response.encode())
 
 
@@ -103,10 +125,13 @@ def eval_genomes(genomes, config):
 
     run = True
     while run:
-        cars = get_unity_data()
-
-        if not(check_cars_alive(cars)):
+        data = get_unity_data()
+        if(data == "new"):
             break
+        cars = parse_unity_data(data)
+
+        # if not(check_cars_alive(cars)):
+        #     break
 
         unity_outputs = []
 
@@ -134,53 +159,59 @@ def eval_genomes(genomes, config):
                     unity_output.append(False)
 
             unity_outputs.append(unity_output.copy())
-        send_unity_outputs(unity_outputs)
+        send_unity_outputs(str(unity_outputs))
 
 
-# Создаем сокет
+def waiting_for_commands():
+    global config, population
+    while True:
+        data = client_socket.recv(4096).decode()
+
+        parsed_json = json.loads(data)
+
+        if parsed_json['command'] == 'Initialize algorithm':
+            config = initialize_algorithm()
+            print("config created")
+            send_unity_outputs("out")
+            continue
+        elif parsed_json['command'] == 'Create population':
+            if config is not None:
+                if population is None:
+                    population = create_population(config)
+                    print("population created")
+                population.run(eval_genomes, 1)
+            else:
+                print("Error: config is None")
+                exit(1)
+        elif parsed_json['command'] == 'Evaluate population':
+            print("Error: no genoms to evaluate")
+            exit(1)
+        elif parsed_json['command'] == 'Process individuals data':
+            print("Error: population is None")
+            exit(1)
+        else:
+            print("Error: wrong command")
+            exit(1)
+
+
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Указываем хост и порт для прослушивания
-host = '127.0.0.1'  # Локальный адрес
-port = 12345  # Произвольный порт
+host = '127.0.0.1'
+port = 12345
 
-# Связываем сокет с хостом и портом
 server_socket.bind((host, port))
 
-# Начинаем прослушивать входящие соединения
 server_socket.listen(1)
 print(f"Сервер запущен на {host}:{port}")
 
-# Принимаем соединение
 client_socket, addr = server_socket.accept()
 print(f"Подключение установлено с {addr}")
 
-gen = 0
+waiting_for_commands()
 
-config = None
-population = None
+# winner = population.run(eval_genomes, None)
 
-while True:
-    # Принимаем данные от Unity
-    data = client_socket.recv(4096).decode()
+# print('\nBest genome:\n{!s}'.format(winner))
 
-    if not data:
-        break
 
-    if data == 'Initialize algorithm':
-        config = initialize_algorithm()
-    elif data == 'Create population':
-        population = create_population(config)
-        break
-    else:
-        exit(1)
-
-    response = "Привет, Unity! Я Python-сервер."
-    client_socket.send(response.encode())
-
-winner = population.run(eval_genomes, 1)
-
-print('\nBest genome:\n{!s}'.format(winner))
-
-# Закрываем соединение
 client_socket.close()

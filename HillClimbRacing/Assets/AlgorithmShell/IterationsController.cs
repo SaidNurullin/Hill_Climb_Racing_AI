@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,6 +50,8 @@ public class IterationsController : MonoBehaviour
         EvaluatePopulation();
 
         AlgorithmShell.Individuals.DestroyIndividuals();
+
+        StartNextIteration();
     }
 
 
@@ -63,25 +66,41 @@ public class IterationsController : MonoBehaviour
             _time -= _time_between_sending_data;
             SendIndividualsData();
         }
+
+        int deadIndividuals = 0;
+        foreach(Individual ind in AlgorithmShell.Individuals.Individuals)
+        {
+            if (!ind.DamageTaker.IsAlive)
+            {
+                deadIndividuals++;
+            }
+        }
+        if(deadIndividuals == AlgorithmShell.Individuals.IndividualsNumber)
+        {
+            EndIteration();
+        }
     }
 
     public void InitializeAlgorithm()
     {
         RequestData request_data = RequestData.GetBuilder().
             SetCommand("Initialize algorithm").
-            SetProcessFunction((string response) => StartNextIteration()).Build();
+            SetProcessFunction((string response) => StartNextIteration()).
+            SetData("[]").Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void CreatePopulation()
     {
         RequestData request_data = RequestData.GetBuilder().
-            SetCommand("Create population").Build();
+            SetCommand("Create population").
+            SetData("[]").Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void EvaluatePopulation()
     {
         RequestData request_data = RequestData.GetBuilder().
-            SetCommand("Evaluate population").Build();
+            SetCommand("Evaluate population").
+            SetData("[]").Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void SendIndividualsData()
@@ -103,13 +122,37 @@ public class IterationsController : MonoBehaviour
     private void ProcessIndividualsCommand(string data)
     {
         Debug.Log($"Processing individuals commands: {data}");
-        int n = 30;
+
+        string[] innerArrays = data.Trim('[', ']').Split(new string[] { "], [" }, StringSplitOptions.None);
+
+        bool[][] boolArray = innerArrays.Select(innerArray =>
+                innerArray.Replace("[", "").Replace("]", "")
+                    .Split(new string[] { ", " }, StringSplitOptions.None)
+                    .Select(str => str == "true").ToArray())
+            .ToArray();
+
+
+        int n = 10;
         float[] individuals_inputs = new float[n];
         for (int i = 0; i < n; ++i)
-            individuals_inputs[i] = UnityEngine.Random.Range(-1, 2);
+        {
+            float _gas = 0f;
+            float _break = 0f;
+            if (boolArray[i][0])
+            {
+                _gas = 1f;
+            }
+            else _gas = 0f;
+            if (boolArray[i][1])
+            {
+                _break = -1f;
+            }
+            else _break = 0f;
+            individuals_inputs[i] = _gas + _break;
+        }
 
         foreach (float input in individuals_inputs)
-            Debug.Log(input);
         AlgorithmShell.Individuals.ProcessIndividualsInputs(individuals_inputs);
     }
 }
+
