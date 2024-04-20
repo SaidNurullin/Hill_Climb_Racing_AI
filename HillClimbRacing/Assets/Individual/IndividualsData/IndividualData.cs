@@ -24,11 +24,11 @@ public class IndividualData
         public Builder SetIndividual(Individual individual)
         {
             _individual_data.Position = new SerializedVector2(individual.transform.position);
-            _individual_data.Rotation = individual.transform.eulerAngles.z;
-            _individual_data.DistanceToGround = individual.Movement.DistanceToGround;
+            _individual_data.Rotation = (float)Math.Round(individual.transform.eulerAngles.z, 3);
+            _individual_data.DistanceToGround = (float)Math.Round(individual.Movement.DistanceToGround);
             _individual_data.IsAlive = individual.DamageTaker.IsAlive ? 1 : 0;
-            _individual_data.MaxScore = individual.Score.MaxScore;
-            _individual_data.CurrentScore = individual.Score.CurrentScore;
+            _individual_data.MaxScore = (float)Math.Round(individual.Score.MaxScore);
+            _individual_data.CurrentScore = (float)Math.Round(individual.Score.CurrentScore);
             return this;
         }
         public Builder SetRoad(SerializedVector2[] road)

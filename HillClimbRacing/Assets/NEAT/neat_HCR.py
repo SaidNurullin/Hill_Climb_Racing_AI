@@ -30,8 +30,8 @@ class Car:
 
 def get_unity_data():
     while True:
-        data = client_socket.recv(4096).decode()
-
+        data = client_socket.recv(4096*4).decode()
+        print(data)
         parsed_json = json.loads(data)
 
         if parsed_json["command"] == "Initialize algorithm":
@@ -39,8 +39,10 @@ def get_unity_data():
             exit(1)
         elif parsed_json["command"] == "Create population":
             print("Error: population is created")
+            send_unity_outputs("out")
             exit(1)
         elif parsed_json["command"] == "Evaluate population":
+            send_unity_outputs("out")
             return "new"
         elif parsed_json["command"] == "Process individuals data":
             return parsed_json["data"]
@@ -55,7 +57,7 @@ def parse_unity_data(data):
 
     if not data:
         return cars
-
+    print(data[0]['Road'])
     for item in data:
         car = Car(
             item['Position'],
@@ -160,12 +162,12 @@ def eval_genomes(genomes, config):
 
             unity_outputs.append(unity_output.copy())
         send_unity_outputs(str(unity_outputs))
-
+        
 
 def waiting_for_commands():
     global config, population
     while True:
-        data = client_socket.recv(4096).decode()
+        data = client_socket.recv(4096*4).decode()
 
         parsed_json = json.loads(data)
 
@@ -175,6 +177,7 @@ def waiting_for_commands():
             send_unity_outputs("out")
             continue
         elif parsed_json['command'] == 'Create population':
+            send_unity_outputs("Population was created")
             if config is not None:
                 if population is None:
                     population = create_population(config)

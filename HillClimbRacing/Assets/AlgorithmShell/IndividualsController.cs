@@ -8,7 +8,6 @@ public class IndividualsController : MonoBehaviour
     public AlgorithmShell AlgorithmShell { get; private set; }
     [SerializeField] private int _individuals_number = 10;
     [SerializeField] private GameObject _individual_pref;
-    [SerializeField] private int _road_points_number = 10;
 
     private Individual[] _individuals;
 
@@ -61,7 +60,7 @@ public class IndividualsController : MonoBehaviour
     {
         return IndividualData.GetBuilder().
             SetIndividual(individual).
-            SetRoad(SerializedVector2.Parse(AlgorithmShell.LevelController.GetRoad(individual.transform.position, _road_points_number))).
+            SetRoad(SerializedVector2.Parse(AlgorithmShell.LevelController.GetRoad(individual.transform.position))).
             Build();
     }
     private IndividualData GetIndividualUIData(Individual individual)

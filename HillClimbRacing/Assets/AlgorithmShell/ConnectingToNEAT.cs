@@ -36,12 +36,15 @@ public class ConnectingToNEAT : MonoBehaviour
     {
         try
         {
+            Debug.Log(data.Command + " " + data.Command);
             byte[] bytesToSend = Encoding.UTF8.GetBytes(data.GetJson());
             await stream.WriteAsync(bytesToSend, 0, bytesToSend.Length);
 
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[4096*4];
             int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
             string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+            Debug.Log(data.Command + " " + response);
             data.ProcessFunction?.Invoke(response);
         }
         catch (Exception e)

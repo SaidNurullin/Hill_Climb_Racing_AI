@@ -15,7 +15,7 @@ public class AlgorithmShell : MonoBehaviour
 
     private void Awake()
     {
-        ConnectingToNEAT.OnCreatingConnection.AddListener(IterationsController.InitializeAlgorithm);
+        ConnectingToNEAT.OnCreatingConnection.AddListener(StartAlgorithm);
     }
 
     private void Start()
@@ -26,5 +26,9 @@ public class AlgorithmShell : MonoBehaviour
     public void InitializeAlgorithmShell()
     {
         ConnectingToNEAT.CreateConnection();
+    }
+    private void StartAlgorithm()
+    {
+        IterationsController.InitializeAlgorithm();
     }
 }

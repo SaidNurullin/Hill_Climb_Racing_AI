@@ -8,8 +8,8 @@ public class SerializedVector2
 
     public SerializedVector2(float x, float y)
     {
-        X = x;
-        Y = y;
+        X = (float)Math.Round(x, 3);
+        Y = (float)Math.Round(y, 3);
     }
     public SerializedVector2() : this(0.0f, 0.0f) { }
     public SerializedVector2(Vector2 vector) : this(vector.x, vector.y) { }

@@ -19,8 +19,7 @@ public class DamageTaker : MonoBehaviour
         if (!_is_alive) return;
 
         Debug.Log("CarTakeDamage");
-        _is_alive = false;
-        OnDieing.Invoke();
+        Die();
     }
 
     public bool IsAlive { get { return _is_alive; } }
@@ -28,5 +27,6 @@ public class DamageTaker : MonoBehaviour
     private void Die()
     {
         _is_alive = false;
+        OnDieing.Invoke();
     }
 }

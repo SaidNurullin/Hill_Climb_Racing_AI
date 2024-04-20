@@ -12,14 +12,19 @@ public class IterationsController : MonoBehaviour
 
     [NonSerialized] public UnityEvent OnStartingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnEndingIteration = new UnityEvent();
+    [NonSerialized] public UnityEvent OnFinishingAlgorithm = new UnityEvent();
 
-    [SerializeField] private int _iterations_number = 10;
+    [SerializeField] private int _iterations_numbers = 10;
     [SerializeField] private float _interactions_number_per_second = 1;
+
+    private int _iteration_number;
     private float _time;
     private float _time_between_sending_data;
     private bool _is_active_iteration;
+
     private void Awake()
     {
+        _iteration_number = 0;
         _time = 0;
         _time_between_sending_data = 1 / _interactions_number_per_second;
         _is_active_iteration = false;
@@ -32,26 +37,28 @@ public class IterationsController : MonoBehaviour
 
     public void StartNextIteration()
     {
+        if (_iteration_number >= _iterations_numbers)
+        {
+            OnFinishingAlgorithm.Invoke();
+            return;
+        }
+        ++_iteration_number;
+
         AlgorithmShell.LevelController.GenerateLevel();
         Vector3 start_point = AlgorithmShell.LevelController.GetStartPoint();
 
         AlgorithmShell.Individuals.CreateIndividuals(start_point);
 
         CreatePopulation();
-
-        _is_active_iteration = true;
-        _time = 0;
     }
 
     public void EndIteration()
     {
         _is_active_iteration = false;
 
-        EvaluatePopulation();
+        StartCoroutine(EvaluatePopulation());
 
         AlgorithmShell.Individuals.DestroyIndividuals();
-
-        StartNextIteration();
     }
 
 
@@ -93,14 +100,26 @@ public class IterationsController : MonoBehaviour
     {
         RequestData request_data = RequestData.GetBuilder().
             SetCommand("Create population").
-            SetData("[]").Build();
+            SetData("[]").
+            SetProcessFunction((string data) =>
+            {
+                _is_active_iteration = true;
+                _time = 0;
+            }).Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
-    public void EvaluatePopulation()
+    public IEnumerator EvaluatePopulation()
     {
+        yield return new WaitForSeconds(1);
         RequestData request_data = RequestData.GetBuilder().
             SetCommand("Evaluate population").
-            SetData("[]").Build();
+            SetData("[]").
+            SetProcessFunction((string data) =>
+            {
+                Debug.Log("Start next iteration");
+                StartNextIteration();
+                Debug.Log("Start124214142 next iteration");
+            }).Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     public void SendIndividualsData()
@@ -121,8 +140,8 @@ public class IterationsController : MonoBehaviour
     }
     private void ProcessIndividualsCommand(string data)
     {
-        Debug.Log($"Processing individuals commands: {data}");
-
+        //Debug.Log(2 + " " + data);
+        //Debug.Log($"Processing individuals commands: {data}");
         string[] innerArrays = data.Trim('[', ']').Split(new string[] { "], [" }, StringSplitOptions.None);
 
         bool[][] boolArray = innerArrays.Select(innerArray =>
