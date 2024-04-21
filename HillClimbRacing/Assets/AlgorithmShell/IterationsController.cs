@@ -128,7 +128,7 @@ public class IterationsController : MonoBehaviour
         List<string> jsonStrings = new List<string>();
         foreach (var individualData in AlgorithmShell.Individuals.GetIndividualsAlgorithmData())
         {
-            string jsonString = JsonUtility.ToJson(individualData);
+            string jsonString = individualData.GetJSON();
             jsonStrings.Add(jsonString);
         }
         string data = "[" + string.Join(",", jsonStrings) + "]";

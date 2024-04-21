@@ -60,7 +60,7 @@ public class IndividualsController : MonoBehaviour
     {
         return IndividualData.GetBuilder().
             SetIndividual(individual).
-            SetRoad(SerializedVector2.Parse(AlgorithmShell.LevelController.GetRoad(individual.transform.position))).
+            SetRoad(AlgorithmShell.LevelController.GetRoad(individual.transform.position)).
             Build();
     }
     private IndividualData GetIndividualUIData(Individual individual)

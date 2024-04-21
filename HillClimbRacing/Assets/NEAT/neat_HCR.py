@@ -38,6 +38,7 @@ def get_unity_data():
             print("Error: algorithm is initialized")
             exit(1)
         elif parsed_json["command"] == "Create population":
+            send_unity_outputs("out")
             print("Error: population is created")
             send_unity_outputs("out")
             exit(1)
@@ -144,6 +145,7 @@ def eval_genomes(genomes, config):
 
             ge[x].fitness = car.current_score
 
+            print(f"{car.position['Y']}\n, {car.rotation}\n, {car.distance_to_ground},\n {car.road1['Y']}, \n{car.road2['Y']}, \n{car.road3['Y']}")
             output = nets[cars.index(car)].activate([
                 car.position['Y'],
                 car.rotation,
@@ -162,7 +164,7 @@ def eval_genomes(genomes, config):
 
             unity_outputs.append(unity_output.copy())
         send_unity_outputs(str(unity_outputs))
-        
+
 
 def waiting_for_commands():
     global config, population
@@ -182,6 +184,7 @@ def waiting_for_commands():
                 if population is None:
                     population = create_population(config)
                     print("population created")
+                send_unity_outputs("out")
                 population.run(eval_genomes, 1)
             else:
                 print("Error: config is None")
