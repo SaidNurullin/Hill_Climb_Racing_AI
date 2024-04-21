@@ -61,16 +61,16 @@ def parse_unity_data(data):
     print(data[0]['Road'])
     for item in data:
         car = Car(
-            item['Position'],
-            item['Rotation'],
-            item['DistanceToGround'],
-            item['IsAlive'],
-            item['MaxScore'],
-            item['CurrentScore'],
-            item['Road'][0],
-            item['Road'][1],
-            item['Road'][2],
-            item['Road'][3])
+            {'X': float(item['Position']['X']), 'Y': float(item['Position']['Y'])},
+            float(item['Rotation']),
+            float(item['DistanceToGround']),
+            bool(item['IsAlive']),
+            float(item['MaxScore']),
+            float(item['CurrentScore']),
+            float(item['Road'][0]['Y']),
+            float(item['Road'][1]['Y']),
+            float(item['Road'][2]['Y']),
+            float(item['Road'][3]['Y']))
         cars.append(car)
     return cars
 
@@ -145,14 +145,14 @@ def eval_genomes(genomes, config):
 
             ge[x].fitness = car.current_score
 
-            print(f"{car.position['Y']}\n, {car.rotation}\n, {car.distance_to_ground},\n {car.road1['Y']}, \n{car.road2['Y']}, \n{car.road3['Y']}")
+            
             output = nets[cars.index(car)].activate([
                 car.position['Y'],
                 car.rotation,
                 car.distance_to_ground,
-                car.road1['Y'],
-                car.road2['Y'],
-                car.road3['Y']])
+                car.road1,
+                car.road2,
+                car.road3])
 
             unity_output = []
 
