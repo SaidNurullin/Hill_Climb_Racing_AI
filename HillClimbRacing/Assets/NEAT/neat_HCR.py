@@ -31,7 +31,7 @@ class Car:
 def get_unity_data():
     while True:
         data = client_socket.recv(4096*4).decode()
-        print(data)
+        #print(data)
         parsed_json = json.loads(data)
 
         if parsed_json["command"] == "Initialize algorithm":
@@ -131,6 +131,7 @@ def eval_genomes(genomes, config):
         data = get_unity_data()
         if(data == "new"):
             break
+        print("Get data")
         cars = parse_unity_data(data)
 
         # if not(check_cars_alive(cars)):
@@ -164,6 +165,7 @@ def eval_genomes(genomes, config):
 
             unity_outputs.append(unity_output.copy())
         send_unity_outputs(str(unity_outputs))
+        print("Send output")
 
 
 def waiting_for_commands():

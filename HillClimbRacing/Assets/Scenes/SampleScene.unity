@@ -4532,6 +4532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
   _iterations_numbers: 10
+  _iterations_duration: 20
   _interactions_number_per_second: 20
 --- !u!1 &519420028
 GameObject:
