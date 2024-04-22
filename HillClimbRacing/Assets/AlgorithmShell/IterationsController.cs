@@ -184,6 +184,7 @@ public class IterationsController : MonoBehaviour
             individuals_inputs[i] = _gas + _break;
         }
 
+        foreach (float input in individuals_inputs)
         AlgorithmShell.Individuals.ProcessIndividualsInputs(individuals_inputs);
     }
 
