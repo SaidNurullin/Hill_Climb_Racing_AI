@@ -100,7 +100,12 @@ def initialize_algorithm():
     return config
 
 
-def create_population(config):
+def create_population(config, data):
+    pop_size = 10
+    if len(data) != 0:
+        pop_size = int(data[0])
+    config.__setattr__('pop_size', pop_size)
+    print(config.__getattribute__('pop_size'))
 
     p = neat.Population(config)
 
@@ -182,7 +187,7 @@ def waiting_for_commands():
             send_unity_outputs("Population was created")
             if config is not None:
                 if population is None:
-                    population = create_population(config)
+                    population = create_population(config, parsed_json['data'])
                     print("population created")
                 send_unity_outputs("out")
                 population.run(eval_genomes, 1)
