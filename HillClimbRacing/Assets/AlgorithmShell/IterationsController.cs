@@ -15,19 +15,24 @@ public class IterationsController : MonoBehaviour
     [NonSerialized] public UnityEvent OnFinishingAlgorithm = new UnityEvent();
 
     [SerializeField] private int _iterations_numbers = 10;
+    [SerializeField] private int _iterations_duration = 10;
     [SerializeField] private float _interactions_number_per_second = 1;
 
     private int _iteration_number;
-    private float _time;
+    private float _iteration_time;
+    private float _sending_data_time;
+    private bool _is_available_to_send_data;
     private float _time_between_sending_data;
     private bool _is_active_iteration;
 
     private void Awake()
     {
         _iteration_number = 0;
-        _time = 0;
+        _sending_data_time = 0;
+        _iteration_time = 0;
         _time_between_sending_data = 1 / _interactions_number_per_second;
         _is_active_iteration = false;
+        _is_available_to_send_data = false;
     }
 
     public void StartFirstIteration()
@@ -67,25 +72,13 @@ public class IterationsController : MonoBehaviour
         if (!_is_active_iteration)
             return;
 
-        _time += Time.deltaTime;
-        if (_time >= _time_between_sending_data)
-        {
-            _time -= _time_between_sending_data;
-            SendIndividualsData();
-        }
+        _sending_data_time += Time.deltaTime;
+        _iteration_time += Time.deltaTime;
 
-        int deadIndividuals = 0;
-        foreach(Individual ind in AlgorithmShell.Individuals.Individuals)
-        {
-            if (!ind.DamageTaker.IsAlive)
-            {
-                deadIndividuals++;
-            }
-        }
-        if(deadIndividuals == AlgorithmShell.Individuals.IndividualsNumber)
-        {
+        TrySendData();
+
+        if (IsIndividualsDead() || IsIterationFinishByTime())
             EndIteration();
-        }
     }
 
     public void InitializeAlgorithm()
@@ -104,7 +97,9 @@ public class IterationsController : MonoBehaviour
             SetProcessFunction((string data) =>
             {
                 _is_active_iteration = true;
-                _time = 0;
+                _sending_data_time = 0;
+                _iteration_time = 0;
+                _is_available_to_send_data = true;
             }).Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
@@ -122,7 +117,16 @@ public class IterationsController : MonoBehaviour
             }).Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
-    public void SendIndividualsData()
+    private void TrySendData()
+    {
+        if (_sending_data_time < _time_between_sending_data || !_is_available_to_send_data)
+            return;
+
+        _sending_data_time = 0;
+        _is_available_to_send_data = false;
+        SendIndividualsData();
+    }
+    private void SendIndividualsData()
     {
 
         List<string> jsonStrings = new List<string>();
@@ -135,7 +139,11 @@ public class IterationsController : MonoBehaviour
         RequestData request_data = RequestData.GetBuilder().
             SetCommand("Process individuals data").
             SetData(data).
-            SetProcessFunction(ProcessIndividualsCommand).Build();
+            SetProcessFunction((string data) =>
+            {
+                _is_available_to_send_data = true;
+                ProcessIndividualsCommand(data);
+            }).Build();
         AlgorithmShell.ConnectingToNEAT.SendData(request_data);
     }
     private void ProcessIndividualsCommand(string data)
@@ -170,8 +178,24 @@ public class IterationsController : MonoBehaviour
             individuals_inputs[i] = _gas + _break;
         }
 
-        foreach (float input in individuals_inputs)
         AlgorithmShell.Individuals.ProcessIndividualsInputs(individuals_inputs);
+    }
+
+    private bool IsIndividualsDead()
+    {
+        int dead_individuals = 0;
+        foreach (Individual ind in AlgorithmShell.Individuals.Individuals)
+        {
+            if (!ind.DamageTaker.IsAlive)
+            {
+                dead_individuals++;
+            }
+        }
+        return dead_individuals == AlgorithmShell.Individuals.IndividualsNumber;
+    }
+    private bool IsIterationFinishByTime()
+    {
+        return _iteration_time > _iterations_duration;
     }
 }
 
