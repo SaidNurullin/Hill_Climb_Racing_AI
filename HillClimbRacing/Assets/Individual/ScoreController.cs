@@ -10,7 +10,7 @@ public class ScoreController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _current_distance = transform.position.y;
+        _current_distance = transform.position.x;
         if (_current_distance > _max_distance)
             _max_distance = _current_distance;
     }

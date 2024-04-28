@@ -9,7 +9,6 @@ public class IterationsController : MonoBehaviour
 {
     [field: SerializeField]
     public AlgorithmShell AlgorithmShell { get; private set; }
-
     [NonSerialized] public UnityEvent OnStartingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnEndingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnFinishingAlgorithm = new UnityEvent();
@@ -35,6 +34,11 @@ public class IterationsController : MonoBehaviour
         _time_between_sending_data = 1 / _interactions_number_per_second;
         _is_active_iteration = false;
         _is_available_to_send_data = false;
+    }
+
+    public int GetIterationNumber()
+    {
+        return _iteration_number;
     }
 
     public void StartFirstIteration()
