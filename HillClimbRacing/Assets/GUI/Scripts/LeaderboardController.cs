@@ -19,9 +19,8 @@
 
         public void UpdateTopIndividualsUI()
         {
-            indexes = new int[individualsData.Length]; // Создаем массив исходных индексов
+            indexes = new int[individualsData.Length]; 
 
-            // Заполняем массив исходных индексов
             for (int i = 0; i < individualsData.Length; i++)
             {
                 indexes[i] = i;

@@ -23,7 +23,7 @@ public class AlgorithmShell : MonoBehaviour
         ConnectingToNEAT.OnCreatingConnection.AddListener(StartAlgorithm);
     }
 
-    private void Start()
+    public void SetupAlgorithm()
     {
         InitializeAlgorithmShell();
     }
@@ -40,6 +40,19 @@ public class AlgorithmShell : MonoBehaviour
     public void SetPresettings()
     {
         Settings.SetSettings(_presettings);
+    }
+
+    public void setSettingIndividualsNumber(string value)
+    {
+        Settings.SetIndividualsNumber(value);
+    }
+    public void setSettingIterationsNumber(string value)
+    {
+        Settings.SetIterationsNumber(value);
+    }
+    public void setSettingIterationDuration(string value)
+    {
+        Settings.SetIterationDuration(value);
     }
 }
 
@@ -67,5 +80,18 @@ public class AlgorithmSettings
         IterationsNumber = settings.IterationsNumber;
         IterationDuration = settings.IterationDuration;
 
+    }
+
+    public void SetIndividualsNumber(string value)
+    {
+        IndividualsNumber = int.Parse(value);
+    }
+    public void SetIterationsNumber(string value)
+    {
+        IterationsNumber = int.Parse(value);
+    }
+    public void SetIterationDuration(string value)
+    {
+        IterationDuration = int.Parse(value);
     }
 }

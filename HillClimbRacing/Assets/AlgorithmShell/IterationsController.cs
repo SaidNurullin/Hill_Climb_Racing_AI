@@ -40,6 +40,11 @@ public class IterationsController : MonoBehaviour
     {
         return _iteration_number;
     }
+    public int GetIterationsNumbers()
+    {
+        return _iterations_numbers;
+    }
+
 
     public void StartFirstIteration()
     {
@@ -50,6 +55,7 @@ public class IterationsController : MonoBehaviour
     {
         if (_iteration_number >= _iterations_numbers)
         {
+            ++_iteration_number;
             OnFinishingAlgorithm.Invoke();
             return;
         }

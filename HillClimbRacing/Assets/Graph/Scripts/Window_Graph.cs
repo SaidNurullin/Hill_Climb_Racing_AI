@@ -16,6 +16,7 @@ public class Window_Graph : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI _currentScore;
     [SerializeField] private TextMeshProUGUI _bestScore;
     [SerializeField] private LeaderboardController _leaderboardController;
+    [SerializeField] private GameObject finishBlock;
     private RectTransform graphContainer;
     private RectTransform labelTemplateX;
     private RectTransform labelTemplateY;
@@ -43,7 +44,10 @@ public class Window_Graph : MonoBehaviour {
     private void Update()
     {
         int controllerIteration = _iterationsController.GetIterationNumber();
-
+        if (controllerIteration > _iterationsController.GetIterationsNumbers())
+        {
+            finishBlock.SetActive(true);
+        }
         currentScore = Mathf.Max(_leaderboardController.getBestScore(), currentScore);
         bestScore = Mathf.Max(currentScore, bestScore);
         Debug.Log(currentScore);
@@ -109,7 +113,6 @@ public class Window_Graph : MonoBehaviour {
     
     public void CreateNextDot()
     {
-        // ClearGraph();
         if (dots.Count > 9)
         {
             dots.RemoveAt(0);
@@ -130,12 +133,11 @@ public class Window_Graph : MonoBehaviour {
     {
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
-        // Переберем все объекты и удалим те, что начинаются с заданного префикса
         foreach (GameObject obj in allObjects)
         {
             if (obj.name == "circle" || obj.name == "dotConnection" )
             {
-                Destroy(obj); // Удаление объекта
+                Destroy(obj);
             }
         }
     }
