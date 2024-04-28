@@ -14,9 +14,11 @@ public class IterationsController : MonoBehaviour
     [NonSerialized] public UnityEvent OnEndingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnFinishingAlgorithm = new UnityEvent();
 
-    [SerializeField] private int _iterations_numbers = 10;
-    [SerializeField] private int _iterations_duration = 10;
     [SerializeField] private float _interactions_number_per_second = 1;
+
+    private int _individuals_number => AlgorithmShell.Settings.IndividualsNumber;
+    private int _iterations_numbers => AlgorithmShell.Settings.IterationsNumber;
+    private float _iterations_duration => AlgorithmShell.Settings.IterationDuration;
 
     private int _iteration_number;
     private float _iteration_time;
@@ -91,9 +93,10 @@ public class IterationsController : MonoBehaviour
     }
     public void CreatePopulation()
     {
+        string data = $"{_individuals_number}";
         RequestData request_data = RequestData.GetBuilder().
             SetCommand("Create population").
-            SetData("[]").
+            SetData($"[{data}]").
             SetProcessFunction((string data) =>
             {
                 _is_active_iteration = true;
@@ -159,9 +162,8 @@ public class IterationsController : MonoBehaviour
             .ToArray();
 
 
-        int n = 10;
-        float[] individuals_inputs = new float[n];
-        for (int i = 0; i < n; ++i)
+        float[] individuals_inputs = new float[_individuals_number];
+        for (int i = 0; i < _individuals_number; ++i)
         {
             float _gas = 0f;
             float _break = 0f;

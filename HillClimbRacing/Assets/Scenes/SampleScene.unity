@@ -4531,8 +4531,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
-  _iterations_numbers: 10
-  _iterations_duration: 20
   _interactions_number_per_second: 20
 --- !u!1 &519420028
 GameObject:
@@ -4910,7 +4908,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AlgorithmShell>k__BackingField: {fileID: 2078595714}
-  _individuals_number: 10
   _individual_pref: {fileID: 6318913371201485549, guid: ef4c05f92a1ed1a44b9d808f75d9eb2f, type: 3}
 --- !u!1 &1244853644
 GameObject:
@@ -5129,6 +5126,10 @@ MonoBehaviour:
   <ConnectingToNEAT>k__BackingField: {fileID: 1954668709}
   <Individuals>k__BackingField: {fileID: 1137144763}
   <LevelController>k__BackingField: {fileID: 1244853646}
+  _presettings:
+    IndividualsNumber: 20
+    IterationsNumber: 10
+    IterationDuration: 2
 --- !u!4 &2078595715
 Transform:
   m_ObjectHideFlags: 0

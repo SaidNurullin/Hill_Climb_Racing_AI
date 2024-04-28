@@ -6,9 +6,9 @@ public class IndividualsController : MonoBehaviour
 {
     [field: SerializeField]
     public AlgorithmShell AlgorithmShell { get; private set; }
-    [SerializeField] private int _individuals_number = 10;
     [SerializeField] private GameObject _individual_pref;
 
+    private int _individuals_number => AlgorithmShell.Settings.IndividualsNumber;
     private Individual[] _individuals;
 
     public void CreateIndividuals(Vector3 start_point)
