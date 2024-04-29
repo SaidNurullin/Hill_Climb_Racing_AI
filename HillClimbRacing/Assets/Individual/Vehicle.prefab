@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 693788355414000559}
   - component: {fileID: 1351074437269407337}
   - component: {fileID: 6162234433576966901}
-  m_Layer: 6
+  - component: {fileID: 8353914024789570064}
+  m_Layer: 8
   m_Name: driver-head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +166,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0.014562715, y: -0.21456832}
-  m_ConnectedAnchor: {x: -0.042437315, y: 0.35843158}
+  m_ConnectedAnchor: {x: -0.042437285, y: 0.35843182}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -174,6 +175,18 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -20
     m_UpperAngle: 20
+--- !u!114 &8353914024789570064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900106405471944268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 691a8ce6cfc6fc943ba24b1ce3996bb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2208020502308829962
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,13 +469,13 @@ PolygonCollider2D:
       - {x: 1.0918529, y: -0.5677663}
       - {x: 1.1634011, y: -0.5318616}
       - {x: 1.197464, y: -0.46634877}
-      - {x: 1.28, y: -0.47}
-      - {x: 1.2570387, y: -0.28679356}
+      - {x: 1.2553426, y: -0.4682388}
+      - {x: 1.2570387, y: -0.25961575}
       - {x: 1.2594695, y: 0.01802382}
-      - {x: 1.24, y: 0.04}
-      - {x: 1.2099999, y: 0.04}
-      - {x: 1.169207, y: -0.006562829}
-      - {x: 1.147024, y: 0.0016756319}
+      - {x: 1.2577248, y: 0.023208179}
+      - {x: 1.1932082, y: 0.022275485}
+      - {x: 1.159116, y: 0.021836162}
+      - {x: 1.130224, y: 0.024075534}
       - {x: 1.11, y: 0.031180285}
       - {x: 0.6885544, y: 0.13696267}
       - {x: 0.6384663, y: 0.19749385}
@@ -655,7 +668,9 @@ GameObject:
   - component: {fileID: 8193066677015145266}
   - component: {fileID: 3257900337170699724}
   - component: {fileID: 1982810772576266717}
+  - component: {fileID: 295647190937295699}
   - component: {fileID: 8253244211491783497}
+  - component: {fileID: 3099862156156923588}
   m_Layer: 6
   m_Name: Vehicle
   m_TagString: Untagged
@@ -708,7 +723,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!235 &3257900337170699724
 WheelJoint2D:
@@ -760,6 +775,21 @@ WheelJoint2D:
   m_Motor:
     m_MotorSpeed: 20
     m_MaximumMotorForce: 10000
+--- !u!114 &295647190937295699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318913371201485549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9b0b29a56c7b64da5940825f5f47a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Movement>k__BackingField: {fileID: 8253244211491783497}
+  <Score>k__BackingField: {fileID: 3099862156156923588}
+  <DamageTaker>k__BackingField: {fileID: 8353914024789570064}
 --- !u!114 &8253244211491783497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,8 +806,23 @@ MonoBehaviour:
   backTyreRB: {fileID: 2489812473818950125}
   carRB: {fileID: 8193066677015145266}
   speed: 100
-  rotationSpeed: 100
+  rotationSpeed: 500
   maxAngularVelocity: 2000
+  _ground_layer_mask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &3099862156156923588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318913371201485549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01bbbfa7eef98ce43b352f162fbd5cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7567110418603830034
 GameObject:
   m_ObjectHideFlags: 0
