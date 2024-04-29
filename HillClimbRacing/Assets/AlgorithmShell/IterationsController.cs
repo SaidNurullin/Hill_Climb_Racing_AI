@@ -9,7 +9,6 @@ public class IterationsController : MonoBehaviour
 {
     [field: SerializeField]
     public AlgorithmShell AlgorithmShell { get; private set; }
-
     [NonSerialized] public UnityEvent OnStartingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnEndingIteration = new UnityEvent();
     [NonSerialized] public UnityEvent OnFinishingAlgorithm = new UnityEvent();
@@ -37,6 +36,16 @@ public class IterationsController : MonoBehaviour
         _is_available_to_send_data = false;
     }
 
+    public int GetIterationNumber()
+    {
+        return _iteration_number;
+    }
+    public int GetIterationsNumbers()
+    {
+        return _iterations_numbers;
+    }
+
+
     public void StartFirstIteration()
     {
         InitializeAlgorithm();
@@ -46,6 +55,7 @@ public class IterationsController : MonoBehaviour
     {
         if (_iteration_number >= _iterations_numbers)
         {
+            ++_iteration_number;
             OnFinishingAlgorithm.Invoke();
             return;
         }
@@ -180,6 +190,7 @@ public class IterationsController : MonoBehaviour
             individuals_inputs[i] = _gas + _break;
         }
 
+        foreach (float input in individuals_inputs)
         AlgorithmShell.Individuals.ProcessIndividualsInputs(individuals_inputs);
     }
 

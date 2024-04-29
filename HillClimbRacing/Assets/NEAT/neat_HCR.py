@@ -222,9 +222,10 @@ print(f"Подключение установлено с {addr}")
 
 waiting_for_commands()
 
-# winner = population.run(eval_genomes, None)
+winner = population.run(eval_genomes, None)
 
-# print('\nBest genome:\n{!s}'.format(winner))
+print('\nBest genome:\n{!s}'.format(winner))
 
 
 client_socket.close()
+    
