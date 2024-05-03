@@ -35,10 +35,14 @@ public class IndividualsController : MonoBehaviour
     public IndividualData[] GetIndividualsUIData()
     {
         IndividualData[] individuals_data = new IndividualData[_individuals_number];
+        if (_individuals == null) return null;
         for (int i = 0; i < _individuals_number; ++i)
+        {
+            if (_individuals[i] == null) return null;
             individuals_data[i] = GetIndividualUIData(_individuals[i]);
-
+        }
         return individuals_data;
+
     }
 
     public void ProcessIndividualsInputs(float[] inputs)

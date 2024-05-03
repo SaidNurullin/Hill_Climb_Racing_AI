@@ -58,7 +58,7 @@ def parse_unity_data(data):
 
     if not data:
         return cars
-    print(data[0]['Road'])
+    # print(data[0]['Road'])
     for item in data:
         car = Car(
             {'X': float(item['Position']['X']), 'Y': float(item['Position']['Y'])},
@@ -105,7 +105,7 @@ def create_population(config, data):
     if len(data) != 0:
         pop_size = int(data[0])
     config.__setattr__('pop_size', pop_size)
-    print(config.__getattribute__('pop_size'))
+    # print(config.__getattribute__('pop_size'))
 
     p = neat.Population(config)
 
@@ -136,7 +136,7 @@ def eval_genomes(genomes, config):
         data = get_unity_data()
         if(data == "new"):
             break
-        print("Get data")
+        # print("Get data")
         cars = parse_unity_data(data)
 
         # if not(check_cars_alive(cars)):
@@ -158,7 +158,8 @@ def eval_genomes(genomes, config):
                 car.distance_to_ground,
                 car.road1,
                 car.road2,
-                car.road3])
+                car.road3,
+                car.road4])
 
             unity_output = []
 
@@ -170,7 +171,7 @@ def eval_genomes(genomes, config):
 
             unity_outputs.append(unity_output.copy())
         send_unity_outputs(str(unity_outputs))
-        print("Send output")
+        # print("Send output")
 
 
 def waiting_for_commands():
@@ -215,10 +216,10 @@ port = 12345
 server_socket.bind((host, port))
 
 server_socket.listen(1)
-print(f"Сервер запущен на {host}:{port}")
+print(f"The server is running on {host}:{port}")
 
 client_socket, addr = server_socket.accept()
-print(f"Подключение установлено с {addr}")
+print(f"Connection established with {addr}")
 
 waiting_for_commands()
 
@@ -228,4 +229,3 @@ print('\nBest genome:\n{!s}'.format(winner))
 
 
 client_socket.close()
-    

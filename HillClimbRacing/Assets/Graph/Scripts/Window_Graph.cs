@@ -27,7 +27,7 @@ public class Window_Graph : MonoBehaviour {
     
     
     float graphHeight;
-    float yMaximum = 100f;
+    float yMaximum = 1000f;
     float xSize = 50f;
     private int iteration = 1;
     private float currentScore = 0;
